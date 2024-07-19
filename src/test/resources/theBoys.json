@@ -1,0 +1,45 @@
+{
+"title": "The Boys",
+  "seasons": [
+    {
+      "season_number": 1,
+      "episodes": [
+        {
+          "episode_number": 1,
+          "title": "The Name of the Game",
+          "description": "When a Supe kills the love of his life, A/V salesman Hughie Campbell teams up with Billy Butcher, a vigilante hell-bent on punishing corrupt Supes."
+        },
+        {
+          "episode_number": 2,
+          "title": "Cherry",
+          "description": "Hughie and Butcher bring Frenchie in to assist in their hunt for Translucent."
+        },
+        {
+          "episode_number": 3,
+          "title": "Get Some",
+          "description": "It's the race of the century, as A-Train and Shockwave compete for the title of World's Fastest Man."
+        }
+      ]
+    },
+    {
+      "season_number": 2,
+      "episodes": [
+        {
+          "episode_number": 1,
+          "title": "The Big Ride",
+          "description": "With Butcher still missing, Hughie, Mother's Milk, Frenchie, and Kimiko go into hiding."
+        },
+        {
+          "episode_number": 2,
+          "title": "Proper Preparation and Planning",
+          "description": "Butcher is back with the Boys, but tensions flare with Hughie."
+        },
+        {
+          "episode_number": 3,
+          "title": "Over the Hill with the Swords of a Thousand Men",
+          "description": "The Boys take to the high seas to safeguard their prisoner."
+        }
+      ]
+    }
+  ]
+}
