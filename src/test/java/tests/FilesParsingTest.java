@@ -1,3 +1,5 @@
+package tests;
+
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
 import com.opencsv.CSVReader;
