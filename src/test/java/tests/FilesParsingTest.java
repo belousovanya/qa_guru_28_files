@@ -2,14 +2,20 @@ package tests;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -24,7 +30,7 @@ public class FilesParsingTest {
     @ValueSource(strings = {
             "CONVERT YOUR LOGO TO .PDF", "Insert Your Image", "Resize Your Image"
     })
-    void userCanSeeTextInPdfTest(String pdfText) throws Exception {
+    void pdfFileContainsTextTest(String pdfText) throws Exception {
         try (ZipInputStream zis = new ZipInputStream(
                 cl.getResourceAsStream("samples.zip")
         )) {
@@ -39,7 +45,7 @@ public class FilesParsingTest {
     }
 
     @Test
-    void userCanSeeSalaryValueInXlsxTest() throws Exception {
+    void xlsxFileContainsExpectedSalaryValueTest() throws Exception {
         try (ZipInputStream zis = new ZipInputStream(cl.getResourceAsStream("samples.zip")
         )) {
             ZipEntry entry;
@@ -54,7 +60,7 @@ public class FilesParsingTest {
     }
 
     @Test
-    void userCanSeeInformationInCvsFileTest() throws Exception {
+    void csvFileContainsExpectedInformationTest() throws Exception {
         try (ZipInputStream zis = new ZipInputStream(cl.getResourceAsStream("samples.zip")
         )) {
             ZipEntry entry;
@@ -71,15 +77,35 @@ public class FilesParsingTest {
         }
     }
 
-    @Test
-    void json() throws Exception {
-
-
-
+    static Stream<Arguments> jsonFileContainsExpectedSeasonsAndEpisodesTest() throws Exception {
+        return Stream.of(
+                Arguments.of(0, 1, "The Name of the Game"),
+                Arguments.of(0, 2, "Cherry"),
+                Arguments.of(0, 3, "Get Some"),
+                Arguments.of(1, 1, "The Big Ride"),
+                Arguments.of(1, 2, "Proper Preparation and Planning"),
+                Arguments.of(1, 3, "Over the Hill with the Swords of a Thousand Men")
+        );
     }
 
+    @ParameterizedTest(name = "У сезона {0}, Эпизод {1} называется {2}")
+    @MethodSource("jsonFileContainsExpectedSeasonsAndEpisodesTest")
+    void jsonFileContainsExpectedSeasonsAndEpisodesTest(int seasonIndex, int episodeNumber, String expectedTitle) throws Exception {
+        try (InputStream is = cl.getResourceAsStream("theBoys.json")) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(is);
+            JsonNode seasonsNode = rootNode.get("seasons");
 
+            JsonNode season = seasonsNode.get(seasonIndex);
+            JsonNode episodes = season.get("episodes");
+            JsonNode episode = episodes.get(episodeNumber - 1);
+
+            Assertions.assertEquals(episodeNumber, episode.get("episode_number").asInt());
+            Assertions.assertEquals(expectedTitle, episode.get("title").asText());
+        }
+    }
 }
+
 
 
 
